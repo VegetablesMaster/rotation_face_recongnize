@@ -14,7 +14,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, models, transforms
 from torchvision.transforms import ToTensor, Resize, Compose
 
-from learn_code.model import CNN, AngleCNN
+from learn_code.model import CNN, AngleCNN, AngleCNN1
 from learn_code.prepare_data import MyDataset, ImageFolderSplitter, DatasetFromFilename, show_batch
 
 use_gpu = torch.cuda.is_available()
@@ -302,7 +302,7 @@ def train_angle_gpu():
     test_y = test_y.cuda().type(torch.cuda.LongTensor)
     test_x = test_x_show.cuda()
 
-    cnn = AngleCNN()
+    cnn = AngleCNN1()
     cnn = cnn.cuda()
     print(cnn)  # net architecture
 
@@ -371,7 +371,7 @@ def test_img_para():
 def train_all():
     # train_face_gpu()
     train_angle_gpu()
-    test_img_para()
+    # test_img_para()
 
 
 if __name__ == '__main__':

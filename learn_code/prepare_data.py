@@ -234,6 +234,7 @@ def yolo_video_process():
     """
     video_pwd = os.getcwd() + '\\video_hub\\app_video_0221'
     output_dir = os.getcwd() + '\\video_hub\\app_video_0221_output'
+    retrain_dir = os.getcwd() + '\\video_hub\\yolo_retrain'
     L = []
     for root, dirs, files in os.walk(video_pwd):  # 把所有的.mp4文件都先挑出来，稍后就一起收拾它们！
         for file in files:
@@ -251,7 +252,9 @@ def yolo_video_process():
             img = cv2.imread('temp.jpg')
             try:                                                                            # 有时候检测不到人脸
                 b = [int(num) for num in result[0][2]]
-            except IndexError:
+            except IndexError:                                                              # 未能识别的图片重新做训练
+                output_img_filename = retrain_dir + '\\' + str(time.time()) + '.jpg'
+                cv2.imwrite(output_img_filename, img)
                 continue
             tr_point = (int(b[0] - 0.5 * b[2]), int(b[1] - 0.5 * b[3]))                     # 在cv2中框出人脸
             lb_point = [int(b[0] + 0.5 * b[2]), int(b[1] + 0.5 * b[3])]
@@ -264,10 +267,10 @@ def yolo_video_process():
             cv2.imshow('show', img)
             output_img = img[tr[1]:lb[1], tr[0]:lb[0]]
             cv2.imshow('show_out', output_img)
-            flag = cv2.waitKey(10000)
-            if flag in [ord(str(x)) for x in [1, 2, 3, 6, 9, 8, 7, 4]]:
-                label_dic = {'49': '-45', '50': '0', '51': '45', '52': '-90', '54': '90',
-                             '55': '-135', '56': '180', '57': '135'}
+            flag = cv2.waitKey(1000000)
+            if flag in [ord(str(x)) for x in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]:
+                label_dic = {'50': '2', '52': '4', '57': '9', '56': '8', '53': '5',
+                             '54': '6', '49': '1', '48': '0', '51': '3', '55': '7'}
                 output_path = '{}\\{}'.format(output_dir, label_dic[str(flag)])
                 if not os.path.exists(output_path):
                     os.mkdir(output_path)
@@ -450,4 +453,5 @@ def haar_family_part():
 
 
 if __name__ == '__main__':
+    # yolo_video_process()
     angle_prepare(True)

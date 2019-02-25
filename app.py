@@ -6,7 +6,7 @@ import base64
 import torch
 import cv2
 import numpy as np
-from learn_code.model import CNN, AngleCNN
+from learn_code.model import CNN, AngleCNN1
 from learn_code.darknet import configDetect
 
 face_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface.xml')
@@ -21,7 +21,7 @@ smile_cascade = cv2.CascadeClassifier('./cascades/haarcascade_smile.xml')
 
 class AI_service():
     def __init__(self):
-        net_angle = AngleCNN()
+        net_angle = AngleCNN1()
         net_angle.cuda()
         net_angle.load_state_dict(torch.load('net_angle_params.pkl'))
         net_angle.cuda()
