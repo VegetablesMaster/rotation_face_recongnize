@@ -1,7 +1,9 @@
 /cascades/
 /ComputerVision/
+/__pycache__/
 /learn_code/examples
 /learn_code/video_hub
+
 
 *.jpg
 !/learn_code/*.jpg
