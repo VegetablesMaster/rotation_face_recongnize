@@ -2,6 +2,7 @@
 __pycache__/
 
 # 从根目录下开始计算
+/.idea/
 /cascades/
 /ComputerVision/
 /yolo_bin/
