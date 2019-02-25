@@ -4,6 +4,7 @@ __pycache__/
 # 从根目录下开始计算
 /cascades/
 /ComputerVision/
+/yolo_bin/
 /learn_code/examples
 /learn_code/video_hub
 
