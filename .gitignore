@@ -8,6 +8,7 @@ __pycache__/
 /yolo_bin/
 /learn_code/examples
 /learn_code/video_hub
+/learn_code/model_out
 
 
 *.jpg
