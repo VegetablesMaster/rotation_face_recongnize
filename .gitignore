@@ -1,15 +1,18 @@
-# 该文件夹下的内容
+# 不同目录下的该文件夹下的内容
 __pycache__/
+.idea/
 
 # 从根目录下开始计算
-/.idea/
-/cascades/
+/local_config.py
 /ComputerVision/
 /yolo_bin/
+
+# 该文件下保存部分有用信息
 /learn_code/examples
 /learn_code/video_hub
 /learn_code/model_out
+/learn_code/cascades
 
-
+#全部的图片，但不包括
 *.jpg
 !/learn_code/*.jpg

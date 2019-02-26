@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 
 from learn_code.darknet import cv2_image_out
+from local_config import config
 
 
 def absolute_path_generator(path):  # Generate all path in dataset folder.
@@ -44,19 +45,19 @@ class CV2_Recongnizer():
             self.load_weight()
 
     def load_weight(self):
-        self.face_eigen.read("model_out\\" + "cv2_face_eigen_model.yml")
-        self.face_fisher.read("model_out\\" + "cv2_face_fisher_model.yml")
-        self.face_lbph.read("model_out\\" + "cv2_face_lbph_model.yml")
+        self.face_eigen.read(config["model_path"] + "cv2_face_eigen_model.yml")
+        self.face_fisher.read(config["model_path"] + "cv2_face_fisher_model.yml")
+        self.face_lbph.read(config["model_path"] + "cv2_face_lbph_model.yml")
         self.Loaded_Flag = True
 
     def train_weight(self, pic_dir_path=None):
         labels, faces = get_labels_and_faces(pic_dir_path)
         self.face_eigen.train(faces, np.array(labels))
-        self.face_eigen.save("model_out\\" + "cv2_face_eigen_model.yml")
+        self.face_eigen.save(config["model_path"] + "cv2_face_eigen_model.yml")
         self.face_fisher.train(faces, np.array(labels))
-        self.face_fisher.save("model_out\\" + "cv2_face_fisher_model.yml")
+        self.face_fisher.save(config["model_path"] + "cv2_face_fisher_model.yml")
         self.face_lbph.train(faces, np.array(labels))
-        self.face_lbph.save("model_out\\" + "cv2_face_lbph_model.yml")
+        self.face_lbph.save(config["model_path"] + "cv2_face_lbph_model.yml")
 
     def predict_cv2_data(self, img):
         if not self.Loaded_Flag:
@@ -83,9 +84,12 @@ def train():
     face_recongizer.train_weight()
 
 
-if __name__ == '__main__':
+def test():
     face_recongizer = CV2_Recongnizer(load_conf=True)
-    out = face_recongizer.predict_img_path('temp.jpg',detect_falg=True)
+    out = face_recongizer.predict_img_path('test.jpg',detect_falg=True)
     print(out)
+
+if __name__ == '__main__':
+    test()
 
 

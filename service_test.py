@@ -2,71 +2,7 @@ import torch
 import cv2
 import numpy as np
 import time
-from learn_code.model import CNN,AngleCNN
 import requests
-import base64
-from app import app_start
-
-face_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface.xml')
-face_alt_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_alt.xml')
-face_alt2_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_alt2.xml')
-face_default_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_default.xml')
-face_extend_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_extended.xml')
-eye_cascade = cv2.CascadeClassifier('./cascades/haarcascade_eye.xml')
-eyeglasses_cascade = cv2.CascadeClassifier('./cascades/haarcascade_eye_tree_eyeglasses.xml')
-smile_cascade = cv2.CascadeClassifier('./cascades/haarcascade_smile.xml')
-
-
-def toTensor(img):
-    assert type(img) == np.ndarray,'the img type is {}, but ndarry expected'.format(type(img))
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = torch.from_numpy(img.transpose((2, 0, 1)))
-    return img.float().div(255).unsqueeze(0)
-
-
-def test_img_para():
-    net_angle = AngleCNN()
-    net_angle.cuda()
-    net_angle.load_state_dict(torch.load('net_angle_params.pkl'))
-    net_angle.cuda()
-    print(net_angle)
-    net_face = CNN()
-    net_face.cuda()
-    net_face.load_state_dict(torch.load('net_face_params.pkl'))
-    net_face.cuda()
-    print(net_face)
-    cap = cv2.VideoCapture(0)
-    count = 0
-    while True:
-        ret, img = cap.read()
-
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = face_alt2_cascade.detectMultiScale(gray, 1.3, 5)
-        imgs = []
-        for (x, y, w, h) in faces:
-            img = cv2.rectangle(img, (x-5, y-5), (x + w + 5, y + h + 5), (255, 0, 0), 2)
-            img_temp = img[y:y+h,x:x+w]
-            img_temp = cv2.resize(img_temp, (100, 100))
-            imgs.append(img_temp)
-        cv2.imshow("recongnize", img)
-        for temp in imgs:
-            temp[:, :, 0] = cv2.equalizeHist(temp[:, :, 0])
-            temp[:, :, 1] = cv2.equalizeHist(temp[:, :, 1])
-            temp[:, :, 2] = cv2.equalizeHist(temp[:, :, 2])
-            count = count + 1
-            cv2.imwrite("outputdir/out"+ str(count) + ".jpg", temp)
-            img = cv2.resize(temp, (100, 100))
-            torch_img = toTensor(img)
-            torch_img = torch_img.cuda()
-            pred_face, last_layer = net_face(torch_img)
-            pred_angle, last_layer = net_angle(torch_img)
-            pred_face = torch.max(pred_face, 1)[1].cpu()
-            pred_angle = torch.max(pred_angle, 1)[1].cpu()
-            cv2.imshow('recongnize_local', img)
-            print('test_img A:' + str(pred_angle[0]) + ' ID: ' + str(pred_face[0]))
-        if cv2.waitKey(200) & 0xFF == ord('q'):
-            break
-
 
 def post_test():
     rul = r'http://192.168.1.101/post_pic'
@@ -91,11 +27,7 @@ def post_test():
     cap.release()
 
 
-def main():
-    post_test()
-
-
 if __name__ == "__main__":
-    main()
+    post_test()
 
 

@@ -6,10 +6,11 @@ import time
 import argparse
 from functools import reduce
 from learn_code.prepare_data import get_rect
+from local_config import config
 from jinja2 import Environment, FileSystemLoader
 
 # TODO:: 在这里配置你编译生成的darknet.exe的环境目录 和准备的训练素材所在文件夹的位置
-yolo_train_enviroment_path = r'C:\Users\vegetable master\Desktop\yolo_cuda\darknet\build\darknet\x64'
+yolo_train_enviroment_path = config['yolo_path']
 prepare_data_path = os.getcwd()                                 # 我的素材就放当前目录的\\video_hub中
 
 
@@ -121,15 +122,19 @@ def yolo_pic_examine():                                               # 检测�
                     os.remove(pic_file_path)
 
 
-def yolo_pic_mark():
+def yolo_pic_mark(target_path=None):
     """
-    一个调用官方打标程序的命令，官方打标命令需要编译安装，别担心，比darknet好装很多 TODO:: 配置训练素材(图片)和类名的文件的路径
+    一个调用官方打标程序的命令，官方打标命令需要编译安装，别担心，比darknet好装很多 NOTICE:: 配置训练素材(图片)和类名的文件的路径
     :return:
     """
-    img_path = prepare_data_path + '\\video_hub\\train_yolo'
-    train_text_path = yolo_train_enviroment_path + '\\my_data\\train.txt'
-    obj_name_file = yolo_train_enviroment_path + '\\' + 'my_own_obj.names'
-    cmd_str = 'yolo_mark.exe ' + img_path + ' ' + train_text_path + ' ' + obj_name_file
+    if not target_path:
+        img_path = prepare_data_path + '\\video_hub\\train_yolo'
+        train_text_path = yolo_train_enviroment_path + '\\my_data\\train.txt'
+        obj_name_file = yolo_train_enviroment_path + '\\' + 'my_own_obj.names'
+        cmd_str = 'yolo_mark.exe ' + img_path + ' ' + train_text_path + ' ' + obj_name_file
+    else:
+        cmd_str = 'yolo_mark.exe ' + target_path + '\\pic ' + target_path+ '\\train.txt ' \
+                  + target_path + '\\my_own_obj.names'
     print(cmd_str)
 
 
@@ -280,6 +285,7 @@ def main():
     # parser.add_argument("square", help="display a square of a given number",
     #                     type=int)
     parser.add_argument('-d', "--demo", help="一个快速帮助你测试yolo的小程序，默认情况下只产生测试命令", action="store_true")
+    parser.add_argument('-l', "--label", help="调用官方的打标程序", action="store_true")
     parser.add_argument('-t', "--train", help="配置darknet的训练环境，并生成其训练命令", action="store_true")
     parser.add_argument('-cs', "--change_sample", help="生成新的训练集测试集的样本信息针对不同的素材，每次分出来的训练集和测试集\
         是不同的", action="store_true")
@@ -294,6 +300,8 @@ def main():
         yolo_train_cmd()
     elif args.change_sample:
         yolo_train_change_sample()
+    elif args.label:
+        yolo_pic_mark()
     else:
         example = 'python prepare_yolo.py -demo -filename leyi.mp4'
         print("you can use cmd like : {} \nor run in cmd and use -h to see help".format(example))

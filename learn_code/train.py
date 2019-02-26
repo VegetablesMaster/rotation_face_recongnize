@@ -156,12 +156,6 @@ def creat_net():
     torch.save(model_ft, 'net.pkl')
 
 
-def restore_net():
-    # restore entire net1 to net2
-    model_ft = torch.load('net.pkl')
-    prediction = model_ft()
-
-
 def train_rotation_split():
     EPOCH = 1  # train the training data n times, to save time, we just train 1 epoch
     LR = 0.001  # learning rate

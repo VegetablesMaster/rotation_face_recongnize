@@ -6,9 +6,10 @@ import random
 import cv2
 # pylint: disable=R, W0401, W0614, W0703
 from ctypes import *
+from local_config import config
 
 # TODO:: 配置yolo可执行程序所在的环境
-yolo_train_enviroment_path = r'C:\Users\vegetable master\Desktop\yolo_cuda\darknet\build\darknet\x64'
+yolo_train_enviroment_path = config['yolo_path']
 
 
 def sample(probs):
@@ -379,7 +380,7 @@ def configDetect(image_Path, img_show_flag=False):
 
 
 def cv2_image_out(image_Path, resize=None):
-    result = configDetect(image_Path)  # TODO :: 提前在darknet.py中配置好yolo所在的环境
+    result = configDetect(image_Path)
     img = cv2.imread('process_img.jpg')
     try:  # 有时候检测不到人脸
         b = [int(num) for num in result[0][2]]
