@@ -104,24 +104,25 @@ def post_yolo_pic():
         tr = (tr_point[0], tr_point[1])
         lb = (lb_point[0], lb_point[1])
         cv2.rectangle(img, tr, lb, (255, 0, 0))
-        cv2.imwrite('process_img_rectangle.jpg', img)
         output_img = img[tr[1]:lb[1], tr[0]:lb[0]]
-        cv2.imwrite('process_img_classify.jpg', output_img)
-        img = cv2.imread('process_img_classify.jpg', cv2.IMREAD_COLOR)
-        img_process = cv2.resize(img, (100, 100))
+        img_process = cv2.resize(output_img, (100, 100))
         img_process[:, :, 0] = cv2.equalizeHist(img_process[:, :, 0])
         img_process[:, :, 1] = cv2.equalizeHist(img_process[:, :, 1])
         img_process[:, :, 2] = cv2.equalizeHist(img_process[:, :, 2])
-        cv2.imwrite('process_img_classify_equlize.jpg', img_process)
         torch_img = ai_service.toTensor(img_process)
         torch_img = torch_img.cuda()
         pred_face, last_layer = ai_service.net_F(torch_img)
         pred_angle, last_layer = ai_service.net_A(torch_img)
         pred_face = torch.max(pred_face, 1)[1].cpu()
         pred_angle = torch.max(pred_angle, 1)[1].cpu()
-        print('test_img A:' + str(pred_angle[0]) + ' ID: ' + str(pred_face[0]))
         date['camera'] = {'id': str(pred_face[0]), 'angle': str(pred_angle[0] * 45), 'location': [b[0], b[1]],
                             'length': int(b[2]*b[3])}
+        text = 'test_img A:' + str(pred_angle[0]) + ' ID: ' + str(pred_face[0])
+        cv2.putText(img, text, tr, cv2.FONT_HERSHEY_PLAIN, 1.6, color=(0, 255, 0))
+        cv2.imwrite('process_img_rectangle.jpg', img)
+        cv2.imwrite('process_img_classify.jpg', output_img)
+        cv2.imwrite('process_img_classify_equlize.jpg', img_process)
+
         return json.dumps(date)
     else:
         return "True url for post"

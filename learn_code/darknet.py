@@ -3,6 +3,7 @@
 import math
 import os
 import random
+import cv2
 # pylint: disable=R, W0401, W0614, W0703
 from ctypes import *
 
@@ -375,6 +376,26 @@ def configDetect(image_Path, img_show_flag=False):
     meta_Path = yolo_train_enviroment_path + obj_data_file
     return performDetect(image_Path, 0.25, config_Path, weight_Path, meta_Path, showImage=img_show_flag, makeImageOnly=False,
                          initOnly=False)
+
+
+def cv2_image_out(image_Path, resize=None):
+    result = configDetect(image_Path)  # TODO :: 提前在darknet.py中配置好yolo所在的环境
+    img = cv2.imread('process_img.jpg')
+    try:  # 有时候检测不到人脸
+        b = [int(num) for num in result[0][2]]
+    except IndexError:
+        return None
+    tr_point = (int(b[0] - 0.5 * b[2]), int(b[1] - 0.5 * b[3]))  # 在cv2中框出人脸
+    lb_point = [int(b[0] + 0.5 * b[2]), int(b[1] + 0.5 * b[3])]
+    tr_point = list(map(lambda x: x if (x > 0) else 0, tr_point))  # map 结果需要list
+    lb_point[0] = lb_point[0] if (lb_point[0] < img.shape[1]) else img.shape[1]  # 防止越界
+    lb_point[1] = lb_point[1] if (lb_point[1] < img.shape[0]) else img.shape[0]
+    tr = (tr_point[0], tr_point[1])
+    lb = (lb_point[0], lb_point[1])
+    output_img = img[tr[1]:lb[1], tr[0]:lb[0]]
+    if resize is not None:
+        output_img = cv2.resize(output_img, resize)
+    return output_img
 
 
 def back_to_filepath():
