@@ -4,7 +4,6 @@ import numpy as np
 from learn_code.model import CNN, AngleCNN1
 
 
-
 face_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface.xml')
 face_alt_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_alt.xml')
 face_alt2_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_alt2.xml')

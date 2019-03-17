@@ -6,6 +6,7 @@ __pycache__/
 /local_config.py
 /ComputerVision/
 /yolo_bin/
+/venv/
 
 # 该文件下保存部分有用信息
 /learn_code/examples
@@ -16,3 +17,6 @@ __pycache__/
 #全部的图片，但不包括
 *.jpg
 !/learn_code/*.jpg
+
+car_people.*
+

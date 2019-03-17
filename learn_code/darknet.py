@@ -379,6 +379,17 @@ def configDetect(image_Path, img_show_flag=False):
                          initOnly=False)
 
 
+def car_people_Detect(image_Path, img_show_flag=False):
+    cfg_file = '\\car_people.cfg'
+    config_Path = yolo_train_enviroment_path + cfg_file
+    weight_file = '\\backup\\car_people.weights'
+    weight_Path = yolo_train_enviroment_path + weight_file
+    obj_data_file = '\\car_people.data'
+    meta_Path = yolo_train_enviroment_path + obj_data_file
+    return performDetect(image_Path, 0.6, config_Path, weight_Path, meta_Path, showImage=img_show_flag, makeImageOnly=False,
+                         initOnly=False)
+
+
 def cv2_image_out(image_Path, resize=None):
     result = configDetect(image_Path)
     img = cv2.imread('process_img.jpg')
