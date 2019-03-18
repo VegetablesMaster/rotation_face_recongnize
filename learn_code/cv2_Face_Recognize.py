@@ -89,6 +89,7 @@ def test():
     out = face_recongizer.predict_img_path('test.jpg',detect_falg=True)
     print(out)
 
+
 if __name__ == '__main__':
     test()
 

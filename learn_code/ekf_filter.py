@@ -5,7 +5,7 @@ def ekf_model():
     # 创建一个0-99的一维矩阵
     z = [i for i in range(100)]
     z_watch = np.mat(z)
-    # print(z_mat)
+    print(z_watch)
 
     # 创建一个方差为1的高斯噪声，精确到小数点后两位
     noise = np.round(np.random.normal(0, 1, 100), 2)
@@ -13,7 +13,7 @@ def ekf_model():
 
     # 将z的观测值和噪声相加
     z_mat = z_watch + noise_mat
-    # print(z_watch)
+    print(z_mat)
 
     # 定义x的初始状态
     x_mat = np.mat([[0, ], [0, ]])

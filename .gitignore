@@ -7,6 +7,8 @@ __pycache__/
 /ComputerVision/
 /yolo_bin/
 /venv/
+/temp_pic/
+
 
 # 该文件下保存部分有用信息
 /learn_code/examples
