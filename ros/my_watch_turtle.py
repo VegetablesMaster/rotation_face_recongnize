@@ -15,7 +15,7 @@ class Watch_Turtle():
         file_obj = open(path, 'rb')
         data_param = {"some_key": "yibeibanzhan", "timestamp": time.time()}
         img_file = {"img": file_obj}
-        data_result = requests.post(r'http://192.168.1.101/post_pic', data_param, files=img_file)
+        data_result = requests.post(r'http://192.168.1.101/post_yolo_pic', data_param, files=img_file)
         return data_result.text
 
     def time_operate(self):

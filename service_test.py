@@ -4,8 +4,16 @@ import numpy as np
 import time
 import requests
 
+
+def post_environment_test():
+    path = 'temp_pic/honglvdeng.jpg'
+    file_obj = open(path, 'rb')
+    img_file = {"img": file_obj}
+    data_result = requests.post(r'http://127.0.0.1/post_environment', files=img_file)
+    print(data_result.text)
+
+
 def post_test():
-    rul = r'http://192.168.1.101/post_pic'
     cap = cv2.VideoCapture(0)
     while True:
         ret, img = cap.read()
@@ -28,6 +36,7 @@ def post_test():
 
 
 if __name__ == "__main__":
-    post_test()
+    # post_test()
+    post_environment_test()
 
 

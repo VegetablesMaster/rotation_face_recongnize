@@ -30,7 +30,7 @@
 ├─local_config.py           # 本地环境的配置文件
 ├─service_test.py           # 服务器测试代码
 ```
-## yolo检测目标表
+## yolo检测目标
 
 ## 预处理感兴趣区域
 

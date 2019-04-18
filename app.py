@@ -2,13 +2,11 @@ from flask import Flask, request
 import json
 import time
 import cv2
-import torch
-import base64
 
 
 from learn_code.cv2_Face_Recognize import CV2_Recongnizer
-from learn_code.torch_angle_classify import AI_service, face_alt2_cascade
-from learn_code.darknet import configDetect
+from learn_code.torch_angle_classify import AI_service
+from learn_code.darknet import configDetect, environment_Detect
 from local_config import config
 
 app = Flask(__name__)
@@ -37,6 +35,21 @@ def take_photo(username):
         f = request.files['img']
         f.save(hub_path + str(time.time()) + '.jpg')
         return 'OK'
+
+
+@app.route('/post_environment', methods=['GET', 'POST'])
+def post_environment():
+    if request.method == 'POST':
+        f = request.files['img']
+        f.save('temp_pic/environment_img.jpg')
+        result = environment_Detect('temp_pic/environment_img.jpg')
+        result_json = []
+        for object in result:
+            a = {'name':object[0], 'trust':object[1], 'location':object[2]}
+            result_json.append(a)
+        return json.dumps(result_json)
+    else:
+        return "True url for post environment"
 
 
 @app.route('/post_yolo_pic', methods=['GET', 'POST'])

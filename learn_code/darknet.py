@@ -379,12 +379,12 @@ def configDetect(image_Path, img_show_flag=False):
                          initOnly=False)
 
 
-def car_people_Detect(image_Path, img_show_flag=False):
-    cfg_file = '\\car_people.cfg'
+def environment_Detect(image_Path, img_show_flag=False):
+    cfg_file = '\\yolov3.cfg'
     config_Path = yolo_train_enviroment_path + cfg_file
-    weight_file = '\\backup\\car_people.weights'
+    weight_file = '\\backup\\yolov3.weights'
     weight_Path = yolo_train_enviroment_path + weight_file
-    obj_data_file = '\\car_people.data'
+    obj_data_file = '\\yolov3.data'
     meta_Path = yolo_train_enviroment_path + obj_data_file
     return performDetect(image_Path, 0.6, config_Path, weight_Path, meta_Path, showImage=img_show_flag, makeImageOnly=False,
                          initOnly=False)
