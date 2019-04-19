@@ -6,6 +6,7 @@ __pycache__/
 /local_config.py
 /ComputerVision/
 /yolo_bin/
+/ardunio_pwm/
 /venv/
 /temp_pic/
 
