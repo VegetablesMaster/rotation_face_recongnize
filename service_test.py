@@ -36,7 +36,7 @@ def post_test():
 
 
 if __name__ == "__main__":
-    # post_test()
-    post_environment_test()
+    post_test()
+    # post_environment_test()
 
 
